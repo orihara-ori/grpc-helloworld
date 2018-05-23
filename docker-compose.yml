@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  grpc-client:
+    build: ./grpc-client
+    hostname: grpc-client
+    networks:
+      grpc-helloworld:
+        ipv4_address: 172.50.0.10
+    container_name: grpc-client
+    tty: true
+    volumes:
+      - ./grpc-client:/root/grpc-client
+    links:
+      - grpc-server
+  grpc-server:
+    build: ./grpc-server
+    hostname: grpc-server
+    networks:
+      grpc-helloworld:
+        ipv4_address: 172.50.0.11
+    container_name: grpc-server
+    tty: true
+    volumes:
+      - ./grpc-server:/root/grpc-server
+networks:
+  grpc-helloworld:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.50.0.0/24
+        gateway: 172.50.0.1
+
+
+
